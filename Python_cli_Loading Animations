@@ -1,0 +1,150 @@
+import random
+import string
+import time
+import os
+import colorama
+import shutil
+
+def Matrix_Animate():
+    duration=3.5
+    time_1=time.time()
+    while True:
+        k1=list(string.ascii_lowercase+string.digits)
+        x=k1*3
+        random.shuffle(x)
+        k=""
+        for i in x[:-4]:
+            k+=str(i)+" " 
+        print(k)
+        time.sleep(0.05)
+        time_2=time.time()
+        if time_2 - time_1 >= duration :
+            clear_screen()
+            break
+
+
+#helper fn 1
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
+#helper fn 2
+def box_outline(spacing = 95,width = 23,time_sleep = 0.03):
+    #this fn creates the box outline for loading...
+    #do not change any values
+    print(" "*spacing,end=" ")
+    print("+",end="")
+    for i in range(width):
+        print("=",end="",flush=True)
+        time.sleep(time_sleep)
+    print("+")
+
+def colour_text(text):
+    colour_dic = {
+    "RED" : "\033[91m" ,
+    "GREEN" : "\033[92m" ,
+    "BLUE" : "\033[94m" ,
+    "YELLOW" : "\033[93m" ,
+    "WHITE" : "\033[97m" ,
+    "PURPLE" : "\033[95m" ,
+    "CYAN" : "\033[96m" ,
+    "RESET" : "\033[0m"
+    }
+    colour = random.choice(list(colour_dic.values()))
+    return f"{colour}{text}{colour_dic["RESET"]}"
+
+
+def Loading(text):
+    colorama.init()
+    main_str = "█"  ; sub_str = " "
+    input("Press Enter to continue...")
+
+    # Layout calculations
+    term_width, term_height = shutil.get_terminal_size()
+    total_width = int(term_width * 0.7)        # box width = 70% of screen
+    left_padding = (term_width - total_width) // 2
+    
+    clear_screen()
+    print("\n"*(term_height - 6))
+    if text:
+        text = "Loading Tip :"+text
+    Loading_statement = " "*left_padding+ f"{text :^{total_width}}"
+    print(Loading_statement) # use ^: to centre align the text
+    box_outline(left_padding,total_width,0)
+    print()
+    box_outline(left_padding,total_width,0)
+    print("\033[A", end = "")
+    print("\033[A", end = "")
+    print(" "*left_padding,"."*(total_width - 2) +"|",end = "")
+    print("\033[K", end="")
+    for i in range(101):
+        load = f"Loading...{i}"
+        side_load = "." * ((total_width - len(load))//2)
+        str1 =" "*(left_padding + 1)+"|"+ side_load + load + side_load
+        print('\r'+str1,end ="", flush = True)
+        time.sleep(0.03)
+    for i in range(total_width - 2):
+        print(f"\r{sub_str * left_padding} |{main_str * i}" , end='', flush = True)
+        time.sleep(0.07)
+    print('|')
+    print("\033[A", end = "")
+    text_2 = "Loading Complete"
+    print(" "*left_padding , "|" + f"{text_2 :^{total_width}}" + "|")
+    time.sleep(1)
+    clear_screen()
+
+
+def Another_Loading(text):
+    colorama.init()
+    main_str = "█" ; sub_str = " " 
+    input("Press Enter to continue...")
+
+    term_width, term_height = shutil.get_terminal_size()
+    total_width = int(term_width * 0.7)        # box width = 70% of screen
+    left_padding = (term_width - total_width) // 2
+    
+    clear_screen()
+    print("\n"*(term_height - 6))
+    if text:
+        text = "Loading Tip :"+text
+    Loading_statement = " "*left_padding+ f"{text :^{total_width}}"
+    print(Loading_statement) 
+    box_outline(left_padding,total_width,0)
+    print()
+    box_outline(left_padding,total_width,0)
+    print("\033[A", end = "")
+    print("\033[A", end = "")
+    for i in range(1 , total_width+1):
+        if i < int(total_width * 0.99) :
+            print(f"\r{sub_str * left_padding} |{main_str * i}{int((i/total_width)*100)}%" , end='', flush = True)
+        else :
+            print(f"\r{sub_str * left_padding} |{main_str * i}" , end='', flush = True)
+        time.sleep(0.07)
+    print('|')
+    print("\033[A", end = "")
+    text_2 = "Loading Complete"
+    print(" "*left_padding , "|" + f"{text_2 :^{total_width}}" + "|")
+    time.sleep(1)
+    clear_screen()
+
+def Title(title_string):
+    lines = title_string.split('\n') 
+    string_width = max(len(i) for i in lines)
+    string_height = len(lines)
+    term_width, term_height = shutil.get_terminal_size()
+    top_padding = (term_height - string_height) //2    
+    left_padding = (term_width - string_width) //2
+    print("\n"*top_padding)
+    for i in lines:
+        print(" "*left_padding + i.ljust(string_width))
+    time.sleep(2)
+    clear_screen()
+
+def Game_Start(loading_screen_tips_list , title_string) :
+    Loading(random.choice(loading_screen_tips_list))
+    Title(title_string)
+
+def write_text(text , time_diff = 0.07):
+    for i in text :
+        print(i , end = "" ,  flush= True)
+        time.sleep(time_diff)

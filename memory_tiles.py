@@ -5,7 +5,6 @@ import tabulate
 import os
 import sys 
 import time 
-import emoji
 from string import ascii_uppercase
 
 def clear_screen():
